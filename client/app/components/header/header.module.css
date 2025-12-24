@@ -1,0 +1,14 @@
+.header {
+  font-family: var(--font-jura-medium);
+  padding: 0 0 25px 0;
+
+  h1 {
+    font-size: 50px;
+    text-transform: uppercase;
+    color: #1c7ed6;
+
+    span {
+      text-transform: none;
+    }
+  }
+}

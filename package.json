@@ -1,0 +1,29 @@
+{
+  "name": "hydro-data-charts",
+  "version": "1.0.0",
+  "description": "Node.js with Express, Sequelize & MySQL",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "sequelize",
+    "mysql",
+    "rest",
+    "api"
+  ],
+  "author": "Lukasz Drazewski",
+  "license": "GPL-3.0-only",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "mysql2": "^3.11.3",
+    "next": "^15.0.2",
+    "nodemon": "^3.1.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sequelize": "^6.37.4"
+  }
+}

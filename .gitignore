@@ -1,0 +1,9 @@
+node_modules
+
+app/config/db.config.js
+
+client/build
+client/.next
+client/node_modules
+client/.env
+

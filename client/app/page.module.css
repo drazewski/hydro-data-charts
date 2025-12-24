@@ -1,0 +1,45 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  grid-row-start: 2;
+  margin-top: 20px;
+}
+
+.titleWrapper {
+  margin-bottom: 6px;
+}
+
+.title {
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.subtitleWrapper {
+  color: #615862;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: var(--font-montserrat-medium-light);
+}
+
+.name {
+  margin-left: 5px;
+  text-transform: capitalize;
+}
+
+.footerText1 {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 10px;
+  font-family: var(--font-montserrat-medium-light);
+} 
+
+.footerText2 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #d43e3e;
+  text-align: center;
+  font-family: var(--font-montserrat-medium-light);
+} 
