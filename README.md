@@ -69,6 +69,9 @@ cd ..
   https://danepubliczne.imgw.pl/data/dane_pomiarowo_obserwacyjne/dane_hydrologiczne/miesieczne/
 - Import them into your MySQL database (`hydro_monthly`, `stations`) using tools such as `LOAD DATA INFILE`, custom import scripts, or a migration/import script of your choice.
 
+- For testing how the app works and charts are created you can start with some example data. The repository includes an `example_data` folder containing sample CSV file(s) (e.g. `example_data/hydro_monthly_example.csv`) that you can import into a newly created database to explore the UI and charts.
+
+
 4. Start the server and the frontend:
 
 ```bash
