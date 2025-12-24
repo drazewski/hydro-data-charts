@@ -9,7 +9,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle
   },
-  port: 3306,
+  port: dbConfig.PORT || 3306,
 });
 const db = {};
 db.Sequelize = Sequelize;
