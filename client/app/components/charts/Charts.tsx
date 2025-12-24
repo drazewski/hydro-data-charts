@@ -35,9 +35,10 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
     }
   }, [yearlyData, monthlyData, isMonthlyData]);
 
-  const minLineData = `min${selectedType}`;
-  const avgLineData = `avg${selectedType}`;
-  const maxLineData = `max${selectedType}`;
+  const capitalizedType = selectedType.charAt(0).toUpperCase() + selectedType.slice(1);
+  const minLineData = `min${capitalizedType}`;
+  const avgLineData = `avg${capitalizedType}`;
+  const maxLineData = `max${capitalizedType}`;
 
   const createSeries = useCallback(() => {
     const series = [];

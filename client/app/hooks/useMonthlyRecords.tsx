@@ -27,17 +27,18 @@ export const useMonthlyRecords = (stationId: number, isMonthlyData: boolean, yea
           acc.years.push(curr.year);
         }
 
-        if (!acc.dataType.includes(RecordDataType.flow) && curr.flow) {
+        if (!acc.dataType.includes(RecordDataType.flow) && curr.flow !== null && curr.flow !== undefined) {
           acc.dataType.push(RecordDataType.flow);
         }
 
-        if (!acc.dataType.includes(RecordDataType.level) && curr.level) {
+        if (!acc.dataType.includes(RecordDataType.level) && curr.level !== null && curr.level !== undefined) {
           acc.dataType.push(RecordDataType.level);
         }
 
         if (
           !acc.dataType.includes(RecordDataType.temperature) &&
-          curr.temperature
+          curr.temperature !== null &&
+          curr.temperature !== undefined
         ) {
           acc.dataType.push(RecordDataType.temperature);
         }
@@ -52,7 +53,7 @@ export const useMonthlyRecords = (stationId: number, isMonthlyData: boolean, yea
 
   const sortedData = useMemo(() => {
     if (!data) return [];
-    return data.sort((a, b) => {
+    return [...data].sort((a, b) => {
       if (a.year === b.year) {
         return a.month - b.month;
       }
@@ -96,11 +97,12 @@ export const useMonthlyRecords = (stationId: number, isMonthlyData: boolean, yea
           };
         }
 
-        for (const field in item) {
-          if (field !== "year" && field !== "month" && field !== "station_id" && item[field]) {
-            acc[key][field.toLowerCase()] = item[field];
+        (["minLevel","avgLevel","maxLevel","minFlow","avgFlow","maxFlow","minTemperature","avgTemperature","maxTemperature"] as const).forEach((field) => {
+          const value = item[field];
+          if (value !== null && value !== undefined) {
+            acc[key][field] = value;
           }
-        }
+        });
 
         return acc;
       },

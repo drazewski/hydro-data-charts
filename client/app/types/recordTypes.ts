@@ -56,13 +56,13 @@ export interface AvailableDataType {
 }
 
 export enum RecordDataTypeLabel {
-  minlevel = 'minimalny poziom',
-  avglevel = 'średni poziom',
-  maxlevel = 'maksymalny poziom',
-  minflow = 'minimalny przepływ',
-  avgflow = 'średni przepływ',
-  maxflow = 'maksymalny przepływ',
-  mintemperature = 'temperatura minimalna',
-  avgtemperature = 'temperatura średnia',
-  maxtemperature = 'temperatura maksymalna',
+  minLevel = 'minimalny poziom',
+  avgLevel = 'średni poziom',
+  maxLevel = 'maksymalny poziom',
+  minFlow = 'minimalny przepływ',
+  avgFlow = 'średni przepływ',
+  maxFlow = 'maksymalny przepływ',
+  minTemperature = 'temperatura minimalna',
+  avgTemperature = 'temperatura średnia',
+  maxTemperature = 'temperatura maksymalna',
 }

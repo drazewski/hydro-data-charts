@@ -15,11 +15,14 @@ const ChartTooltip = ({ label, payload, unit }: ChartTooltipProps) => {
       <Text fw={500} mb={5}>
         {label}
       </Text>
-      {payload.map((item: any) => (
-        <Text key={item.name} c={item.color} fz="sm" ta={"left"}>
-          {RecordDataTypeLabel[item.name]}: {item.value} {unit}
-        </Text>
-      ))}
+      {payload.map((item: any) => {
+        const displayName = RecordDataTypeLabel[item.name as keyof typeof RecordDataTypeLabel] ?? item.name;
+        return (
+          <Text key={item.name} c={item.color} fz="sm" ta={"left"}>
+            {displayName}: {item.value} {unit}
+          </Text>
+        );
+      })}
     </Paper>
   );
 }
