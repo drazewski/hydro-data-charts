@@ -1,4 +1,4 @@
-# Hydro Data Charts ⚓️
+# Hydro Data Charts
 
 **Hydro Data Charts** is a small data visualization project: a Node/Express + Sequelize API backed by MySQL that exposes hydrological monthly and yearly aggregates, and a Next.js front-end that visualizes station data with charts and filters.
 
@@ -24,7 +24,7 @@
 ## ⚙️ Requirements
 
 - Node.js 18+ (or compatible)
-- MySQL server (create a database named `db_hydro` or edit `app/config/db.config.js`)
+- MySQL server (create a database named and provide credentials here: `app/config/db.config.js`)
 
 ---
 
@@ -49,26 +49,23 @@ npm install
 cd ..
 ```
 
-3. Database: create a MySQL database `db_hydro` and provide credentials.
-   - The DB config is in `app/config/db.config.js` and **reads environment variables** when present.
-   - **Do not commit real credentials.** Use a local `.env` file (add `.env` to `.gitignore`) or set environment variables in your environment.
-   - Suggested environment variables:
+3. Database: create a MySQL database and provide credentials.
+   - The DB config is in `app/config/db.config.js` which is not in the repository, if you create your own database you will have to create this file.
+   - The structure of the db.config.js is
 
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password_here
-DB_NAME=db_hydro
-DB_PORT=3306
-DB_DIALECT=mysql
 ```
-
-   - See `.env.example` for an example file.
-   - For production, set secure environment variables through your hosting provider or secrets manager.
+   module.exports = {
+    HOST: "localhost",
+    USER: "root",
+    PASSWORD: "your_db_password",
+    DB: "your_db_name",
+    dialect: "mysql",
+  };
+```
 
 **Importing data**
 
-- The database must be populated with the official hydrological CSVs from IMGW. Download monthly CSV files from:
+- The database must be populated with the hydrological data. Originally I use IMGW data (published as .csv files) from IMGW. You can download monthly CSV files from:
   https://danepubliczne.imgw.pl/data/dane_pomiarowo_obserwacyjne/dane_hydrologiczne/miesieczne/
 - Import them into your MySQL database (`hydro_monthly`, `stations`) using tools such as `LOAD DATA INFILE`, custom import scripts, or a migration/import script of your choice.
 
@@ -138,10 +135,9 @@ Example: `curl "http://localhost:8080/api/records/yearly/123?from=1990&to=2000"`
 
 Feel free to open issues or PRs. If you plan to make breaking changes to the DB schema, consider adding migrations instead of relying only on `sequelize.sync()`.
 
-**Hosting / Hosting (wkrótce)**
+**Hosting**
 
 - Note: the project will be hosted under a public URL soon (to be announced).
-- PL: Uwaga: projekt wkrótce będzie hostowany pod publicznym adresem URL (adres zostanie podany później).
 
 ---
 
