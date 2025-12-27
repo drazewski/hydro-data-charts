@@ -6,13 +6,14 @@ interface UseStationsType {
 }
 
 export const useStations = (): UseStationsType => {
-  const data = stations.stations;
+  const data = Array.isArray(stations.stations) ? stations.stations : [];
 
-  const reducedStations = data?.reduce((acc: StationType[], curr) => {
+  const reducedStations = data.reduce((acc: StationType[], curr) => {
+    if (typeof curr.waterName !== "string" || typeof curr.name !== "string") return acc;
     if (curr.waterName.includes('Jez.')) return acc;
-    const waterName = curr.waterName.replace(/[0-9()]/g, "");
-    const stationName = curr.name;
-    const fullName = `${waterName}(${stationName})`;
+    const waterName = curr.waterName.replace(/[0-9()]/g, "").trim();
+    const stationName = curr.name.trim();
+    const fullName = `${waterName} (${stationName})`;
     acc.push({
       id: curr.id,
       name: stationName,
@@ -20,10 +21,9 @@ export const useStations = (): UseStationsType => {
       waterName,
     });
     return acc;
-  }, []).sort();
+  }, []);
 
   return {
     stations: reducedStations.sort((a, b) => a.waterName.localeCompare(b.waterName)),
   }
 }
-

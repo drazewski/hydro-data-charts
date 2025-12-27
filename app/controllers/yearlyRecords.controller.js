@@ -37,6 +37,7 @@ const tempValid = `temperature <= 50`;
 const yearlyAttributes = [
   // klucz grupowania (skorygowany rok)
   [Sequelize.literal(correctedYearSql), "year"],
+  ["station_id", "stationId"],
 
   // LEVEL
   [Sequelize.fn("MIN", Sequelize.literal(`CASE WHEN type=1 THEN NULLIF(level, 9999) END`)), "minLevel"],
@@ -53,6 +54,9 @@ const yearlyAttributes = [
   [Sequelize.fn("MAX", Sequelize.literal(`CASE WHEN type=3 AND ${tempValid} THEN temperature END`)), "maxTemperature"],
   [Sequelize.fn("AVG", Sequelize.literal(`CASE WHEN type=2 AND ${tempValid} THEN temperature END`)), "avgTemperature"],
 ];
+
+const formatToNumber = (value) =>
+  value != null ? Number.parseFloat(Number(value).toFixed(2)) : null;
 
 /**
  * GET /api/records/yearly/:id?from=YYYY&to=YYYY
@@ -82,30 +86,32 @@ exports.findAll = (req, res) => {
       : {};
 
   Record.findAll({
-    where,
     attributes: yearlyAttributes,
-    group: [Sequelize.literal(correctedYearSql)],
+    group: ["station_id", Sequelize.literal(correctedYearSql)],
     // filtr po skorygowanym roku w sekcji "where" z literalem (Sequelize.where)
     // dorzucamy go przez "havingOrWhereYear" (który tworzy [Op.and] z literalem)
     // Uwaga: w SQLite/MySQL/PG to podejście działa; jeśli używasz innego dialektu, można przenieść do HAVING.
     where: { ...where, ...havingOrWhereYear },
-    order: [[Sequelize.literal("year"), "ASC"]],
+    order: [
+      ["station_id", "ASC"],
+      [Sequelize.literal("year"), "ASC"],
+    ],
     raw: true,
   })
     .then((rows) => {
       // rows są już zagregowane; upewnijmy się, że liczby są… liczbami ;)
       const out = rows.map((r) => ({
         year: Number(r.year),
-        stationid: r.stationId,
-        minlevel: r.minLevel != null ? Number(r.minLevel).toFixed(2) : null,
-        avglevel: r.avgLevel != null ? Number(r.avgLevel).toFixed(2) : null,
-        maxlevel: r.maxLevel != null ? Number(r.maxLevel).toFixed(2) : null,
-        minflow: r.minFlow != null ? Number(r.minFlow).toFixed(2) : null,
-        avgflow: r.avgFlow != null ? Number(r.avgFlow).toFixed(2) : null,
-        maxflow: r.maxFlow != null ? Number(r.maxFlow).toFixed(2) : null,
-        mintemperature: r.minTemperature != null ? Number(r.minTemperature).toFixed(2) : null,
-        avgtemperature: r.avgTemperature != null ? Number(r.avgTemperature).toFixed(2) : null,
-        maxtemperature: r.maxTemperature != null ? Number(r.maxTemperature).toFixed(2) : null,
+        stationId: Number(r.stationId),
+        minLevel: formatToNumber(r.minLevel),
+        avgLevel: formatToNumber(r.avgLevel),
+        maxLevel: formatToNumber(r.maxLevel),
+        minFlow: formatToNumber(r.minFlow),
+        avgFlow: formatToNumber(r.avgFlow),
+        maxFlow: formatToNumber(r.maxFlow),
+        minTemperature: formatToNumber(r.minTemperature),
+        avgTemperature: formatToNumber(r.avgTemperature),
+        maxTemperature: formatToNumber(r.maxTemperature),
       }));
       res.send(out);
     })
@@ -133,7 +139,7 @@ exports.findByYear = (req, res) => {
   Record.findAll({
     where,
     attributes: yearlyAttributes,
-    group: [Sequelize.literal(correctedYearSql)],
+    group: ["station_id", Sequelize.literal(correctedYearSql)],
     // warunek: skorygowany rok = :year
     where: {
       ...where,
@@ -146,16 +152,16 @@ exports.findByYear = (req, res) => {
       if (!r) return res.send([]);
       const out = {
         year: Number(r.year),
-        stationId: r.stationId,
-        minLevel: r.minLevel != null ? Number(r.minLevel).toFixed(2) : null,
-        avgLevel: r.avgLevel != null ? Number(r.avgLevel).toFixed(2) : null,
-        maxLevel: r.maxLevel != null ? Number(r.maxLevel).toFixed(2) : null,
-        minFlow: r.minFlow != null ? Number(r.minFlow).toFixed(2) : null,
-        avgFlow: r.avgFlow != null ? Number(r.avgFlow).toFixed(2) : null,
-        maxFlow: r.maxFlow != null ? Number(r.maxFlow).toFixed(2) : null,
-        minTemperature: r.minTemperature != null ? Number(r.minTemperature).toFixed(2) : null,
-        avgTemperature: r.avgTemperature != null ? Number(r.avgTemperature).toFixed(2) : null,
-        maxTemperature: r.maxTemperature != null ? Number(r.maxTemperature).toFixed(2) : null,
+        stationId: Number(r.stationId),
+        minLevel: formatToNumber(r.minLevel),
+        avgLevel: formatToNumber(r.avgLevel),
+        maxLevel: formatToNumber(r.maxLevel),
+        minFlow: formatToNumber(r.minFlow),
+        avgFlow: formatToNumber(r.avgFlow),
+        maxFlow: formatToNumber(r.maxFlow),
+        minTemperature: formatToNumber(r.minTemperature),
+        avgTemperature: formatToNumber(r.avgTemperature),
+        maxTemperature: formatToNumber(r.maxTemperature),
       };
       res.send([out]); // spójnie z findAll (zwracamy tablicę)
     })
@@ -211,11 +217,11 @@ exports.findAllWithTemperatureIn2000 = async (req, res) => {
 
     // 3. Sformatuj wynik
     const out = filteredRows.map((r) => ({
-      stationId: r.stationId,
+      stationId: Number(r.stationId),
       year: Number(r.year),
-      minTemperature: r.minTemperature != null ? Number(r.minTemperature).toFixed(2) : null,
-      avgTemperature: r.avgTemperature != null ? Number(r.avgTemperature).toFixed(2) : null,
-      maxTemperature: r.maxTemperature != null ? Number(r.maxTemperature).toFixed(2) : null,
+      minTemperature: formatToNumber(r.minTemperature),
+      avgTemperature: formatToNumber(r.avgTemperature),
+      maxTemperature: formatToNumber(r.maxTemperature),
     }));
 
     res.send(out);
@@ -225,4 +231,3 @@ exports.findAllWithTemperatureIn2000 = async (req, res) => {
     });
   }
 };
-
