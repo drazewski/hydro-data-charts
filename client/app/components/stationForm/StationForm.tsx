@@ -1,6 +1,7 @@
 'use client';
-import { useMemo } from 'react';
-import { Autocomplete} from '@mantine/core';
+import { useMemo, useState } from 'react';
+import { Autocomplete, CloseButton } from '@mantine/core';
+import { useDebouncedCallback } from '@mantine/hooks';
 import { useStations } from '../../hooks/useStations';
 import { useStationStore } from '../../hooks/useStationStore';
 import styles from "./stationForm.module.css";
@@ -8,16 +9,22 @@ import styles from "./stationForm.module.css";
 const StationForm = () => {
   const { stations } = useStations();
   const setSelectedStation = useStationStore((state) => state.setSelectedStation);
+  const [value, setValue] = useState('');
 
   const stationsNames = useMemo(() => stations.map(station => ({label: station.fullName || '', value: station.id.toString()})), [stations]);
 
-  const handleChange = (value: string) => {
+  const handleChange = useDebouncedCallback((newValue: string) => {
     const newSelectedStation = stations.find(
       (station) =>
-        station.id.toString() === value ||
-        station.fullName?.toLowerCase() === value.toLowerCase()
+        station.id.toString() === newValue ||
+        station.fullName?.toLowerCase() === newValue.toLowerCase()
     );
     setSelectedStation(newSelectedStation || null);
+  }, 300);
+
+  const handleClear = () => {
+    setValue('');
+    setSelectedStation(null);
   };
 
   return (
@@ -29,7 +36,13 @@ const StationForm = () => {
           option: styles.option,
           input: styles.option,
         }}
-        onChange={handleChange}
+        value={value}
+        onChange={(newValue) => {
+          setValue(newValue);
+          handleChange(newValue);
+        }}
+        rightSection={value ? <CloseButton onClick={handleClear} aria-label="Wyczyść" /> : null}
+        rightSectionPointerEvents="all"
       />
     </div>
   );

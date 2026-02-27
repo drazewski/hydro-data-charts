@@ -107,3 +107,11 @@ The client expects `NEXT_PUBLIC_VITE_BASE_URL` (e.g., `http://localhost:8080`) i
 
 ## Data Import
 The project uses hydrological data from IMGW (Polish Institute of Meteorology and Water Management). Example CSV files are in `example_data/` for testing. Import using MySQL tools or custom scripts.
+
+## Code Style
+- Use ES6+ syntax (e.g., `const`, `let`, arrow functions)
+- Follow standard JavaScript conventions (camelCase, semicolons, etc.)
+- For React components, use functional components and hooks
+- do not write comments, but ensure code is self-explanatory and maintainable
+- for styling use Mantine's theming and styling solutions, use css modules if really necessary, but prefer inline styles or Mantine's `sx` prop for simplicity
+

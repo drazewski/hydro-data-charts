@@ -3,7 +3,6 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "../theme";
-import Header from "./components/header/Header";
 
 const juraMedium = localFont({
   src: "./fonts/Jura/static/Jura-Medium.ttf",
@@ -31,7 +30,7 @@ export const metadata = {
   description: "I am using Mantine with Next.js!",
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

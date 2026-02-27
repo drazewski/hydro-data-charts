@@ -14,7 +14,7 @@ const initialAvailableData = {
 };
 
 export const useMonthlyRecords = (stationId: number, isMonthlyData: boolean, yearFrom?: number, yearTo?: number) => {
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     ["monthlyRecords", stationId, yearFrom, yearTo],
     (): Promise<MonthlyRecordType[]> => getMonthlyRecords(stationId, yearFrom, yearTo),
     { enabled: !!stationId && isMonthlyData }
@@ -83,7 +83,7 @@ export const useMonthlyRecords = (stationId: number, isMonthlyData: boolean, yea
       },
       []
     );
-  }, [sortedData]);
+  }, [sortedData, stationId]);
 
   const mergedByMonth = useMemo(() => Object.values(
     structuredData.reduce(
@@ -108,7 +108,7 @@ export const useMonthlyRecords = (stationId: number, isMonthlyData: boolean, yea
       },
       {}
     )
-  ), [sortedData]);
+  ), [structuredData]);
 
   return {
     data: mergedByMonth,
@@ -117,5 +117,6 @@ export const useMonthlyRecords = (stationId: number, isMonthlyData: boolean, yea
       year: availableData.years.sort().reverse(),
     },
     isLoading,
+    isError,
   };
 };

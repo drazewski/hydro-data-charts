@@ -1,10 +1,9 @@
-import { Checkbox, ComboboxItem, Loader, Radio, Select, Switch, SwitchGroup } from "@mantine/core";
-import { useMonthlyRecords } from "../../hooks/useMonthlyRecords";
+import { Checkbox, ComboboxItem, Loader, Radio, Select, Switch, Text } from "@mantine/core";
 import { useStationStore } from "../../hooks/useStationStore";
 import { RecordDataType, StationType } from "../../types/recordTypes";
 import styles from "./filters.module.css";
 import { useMemo } from "react";
-import { useYearlyRecords } from "../../hooks/useYearlyRecords";
+import { useAvailableYears } from "../../hooks/useAvailableYears";
 
 interface Props {
   selectedStation: StationType;
@@ -21,13 +20,9 @@ const Filters = ({ selectedStation }: Props) => {
   const setMonthlyData = useStationStore((state) => state.setIsMonthlyData);
   const setSelectedDataType = useStationStore((state) => state.setSelectedDataType);
   const setAggregation = useStationStore((state) => state.setAggregation);
-  const { availableData: monthlyAvailableData, isLoading: isLoadingMonthly } = useMonthlyRecords(selectedStation?.id, isMonthlyData);
-  const { availableData: yearlyAvailableData, isLoading: isLoadingYearly } = useYearlyRecords(selectedStation?.id, isMonthlyData);
+  const { years, isLoading, isError } = useAvailableYears(selectedStation?.id);
 
-  const sortedYears = useMemo(() => {
-    const yrs = isMonthlyData ? monthlyAvailableData.years : yearlyAvailableData.years;
-    return [...(yrs || [])].sort((a, b) => a - b);
-  }, [monthlyAvailableData.years, yearlyAvailableData.years, isMonthlyData]);
+  const sortedYears = useMemo(() => [...years].sort((a, b) => a - b), [years]);
 
   const yearsOptions = useMemo(
     () => sortedYears.map((y) => ({ label: y.toString(), value: y.toString() })),
@@ -74,8 +69,10 @@ const handleYearFromChange = (_: string | null, option: ComboboxItem) => {
 
   return (
     <div>
-      {isLoadingMonthly || isLoadingYearly ? (
+      {isLoading ? (
         <Loader color="blue" size="xl" type="bars" className={styles.loader} />
+      ) : isError ? (
+        <Text c="red">Błąd ładowania danych. Spróbuj ponownie.</Text>
       ) : (
         <div className={styles.container}>
           <div className={styles.row}>

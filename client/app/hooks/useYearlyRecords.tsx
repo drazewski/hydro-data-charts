@@ -5,7 +5,7 @@ import { YearlyRecordType, RecordDataType } from "../types/recordTypes";
 import { getYearlyRecords } from "../services/recordService";
 
 export const useYearlyRecords = (stationId: number, isMonthlyData: boolean, yearFrom?: number, yearTo?: number) => {
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     ["yearlyRecords", stationId, yearFrom, yearTo],
     (): Promise<YearlyRecordType[]> => getYearlyRecords(stationId, yearFrom, yearTo),
     { enabled: !!stationId && !isMonthlyData }
@@ -34,5 +34,6 @@ export const useYearlyRecords = (stationId: number, isMonthlyData: boolean, year
     data: sorted,
     availableData: { years: availableYears, hasType },
     isLoading,
+    isError,
   };
 };

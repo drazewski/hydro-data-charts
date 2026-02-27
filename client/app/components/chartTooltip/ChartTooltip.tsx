@@ -3,7 +3,7 @@ import { RecordDataTypeLabel } from '../../types/recordTypes';
 
 interface ChartTooltipProps {
   label: React.ReactNode;
-  payload: Record<string, any>[] | undefined;
+  payload: Record<string, unknown>[] | undefined;
   unit?: string;
 }
 
@@ -15,11 +15,11 @@ const ChartTooltip = ({ label, payload, unit }: ChartTooltipProps) => {
       <Text fw={500} mb={5}>
         {label}
       </Text>
-      {payload.map((item: any) => {
+      {payload.map((item: Record<string, unknown>) => {
         const displayName = RecordDataTypeLabel[item.name as keyof typeof RecordDataTypeLabel] ?? item.name;
         return (
-          <Text key={item.name} c={item.color} fz="sm" ta={"left"}>
-            {displayName}: {item.value} {unit}
+          <Text key={item.name as string} c={item.color as string} fz="sm" ta={"left"}>
+            {displayName}: {item.value as number} {unit}
           </Text>
         );
       })}

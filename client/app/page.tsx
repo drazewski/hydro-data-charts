@@ -7,7 +7,15 @@ import StationForm from "./components/stationForm/StationForm";
 import { useStationStore } from "./hooks/useStationStore";
 import Charts from "./components/charts/Charts";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+      retry: 1,
+    },
+  },
+});
 
 export default function Home() {
   const selectedStation = useStationStore((state) => state.station);
@@ -39,8 +47,6 @@ export default function Home() {
               selectedYearFrom={selectedYearFrom}
               selectedYearTo={selectedYearTo}
             />
-          <p className={styles.footerText1}>Źródłem pochodzenia danych jest <strong><a href="https://imgw.pl/" target="_blank">Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy</a>  </strong></p>
-          <p className={styles.footerText2}>Dane Instytutu Meteorologii i Gospodarki Wodnej – Państwowego Instytutu Badawczego zostały przetworzone</p>
           </div>
         )}
       </main>

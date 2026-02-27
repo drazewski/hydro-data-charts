@@ -1,5 +1,6 @@
 import { LineChart } from '@mantine/charts';
-import { RecordDataType, StationType } from "../../types/recordTypes";
+import { Loader, Text } from '@mantine/core';
+import { MonthlyStructuredRecordType, RecordDataType, StationType, YearlyRecordType } from "../../types/recordTypes";
 import { useMonthlyRecords } from "../../hooks/useMonthlyRecords";
 import { useCallback, useMemo } from 'react';
 import { useStationStore } from '../../hooks/useStationStore';
@@ -16,21 +17,21 @@ interface Props {
 const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedType }: Props) => {
   const aggregation = useStationStore((state) => state.aggregation);
   const isMonthlyData = useStationStore((state) => state.isMonthlyData);
-  const { data: monthlyData } = useMonthlyRecords(selectedStation?.id, isMonthlyData, Number(selectedYearFrom), Number(selectedYearTo));
-  const { data: yearlyData } = useYearlyRecords(selectedStation?.id, isMonthlyData, Number(selectedYearFrom), Number(selectedYearTo));
+  const { data: monthlyData, isLoading: isLoadingMonthly, isError: isErrorMonthly } = useMonthlyRecords(selectedStation?.id, isMonthlyData, Number(selectedYearFrom), Number(selectedYearTo));
+  const { data: yearlyData, isLoading: isLoadingYearly, isError: isErrorYearly } = useYearlyRecords(selectedStation?.id, isMonthlyData, Number(selectedYearFrom), Number(selectedYearTo));
 
   const data = useMemo(() => {
     if (!monthlyData || !yearlyData) return [];
 
     if (isMonthlyData) {
-      return monthlyData.map((d: any) => ({
+      return monthlyData.map((d: MonthlyStructuredRecordType) => ({
         ...d,
-        label: `${String(d.month).padStart(2, '0')}.${d.year}`, // np. 01.2023
+        label: `${String(d.month).padStart(2, '0')}.${d.year}`,
       }));
     } else {
-      return yearlyData.map((d: any) => ({
+      return yearlyData.map((d: YearlyRecordType) => ({
         ...d,
-        label: String(d.year), // np. 2023
+        label: String(d.year),
       }));
     }
   }, [yearlyData, monthlyData, isMonthlyData]);
@@ -79,6 +80,14 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
 
   return (
     <div>
+      {(isLoadingMonthly || isLoadingYearly) ? (
+        <div style={{ height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Loader color="blue" size="xl" type="bars" />
+        </div>
+      ) : (isErrorMonthly || isErrorYearly) ? (
+        <Text c="red">Błąd ładowania danych wykresu. Spróbuj ponownie.</Text>
+      ) : (
+      <>
       <LineChart
         h={400}
         data={data}
@@ -132,6 +141,14 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
           position: { y: 90 }
         }}
       />
+      <p style={{ fontSize: 16, textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-montserrat-medium-light)' }}>
+        Źródłem pochodzenia danych jest <strong><a href="https://imgw.pl/" target="_blank">Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy</a></strong>
+      </p>
+      <p style={{ fontSize: 16, fontWeight: 800, color: '#d43e3e', textAlign: 'center', fontFamily: 'var(--font-montserrat-medium-light)' }}>
+        Dane Instytutu Meteorologii i Gospodarki Wodnej – Państwowego Instytutu Badawczego zostały przetworzone
+      </p>
+      </>
+      )}
     </div>
   );
 }

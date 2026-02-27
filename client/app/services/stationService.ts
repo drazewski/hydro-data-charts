@@ -1,7 +1,7 @@
-
 import apiClient from '../config/api';
+import { StationType } from '../types/recordTypes';
 
-export const getAllStations = async (): Promise<any[]> => {
+export const getAllStations = async (): Promise<StationType[]> => {
   const { data } = await apiClient.get(`stations`);
   return data;
 };
