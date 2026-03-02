@@ -1,9 +1,15 @@
-import { Checkbox, ComboboxItem, Loader, Radio, Select, Switch, Text } from "@mantine/core";
+import { Checkbox, ComboboxItem, Loader, Select, Switch, Text } from "@mantine/core";
 import { useStationStore } from "../../hooks/useStationStore";
 import { RecordDataType, StationType } from "../../types/recordTypes";
 import styles from "./filters.module.css";
 import { useEffect, useMemo } from "react";
 import { useAvailableYears } from "../../hooks/useAvailableYears";
+
+const DATA_TYPE_OPTIONS = [
+  { label: "Stan wody (cm)", value: RecordDataType.level },
+  { label: "Przepływ (m3/s)", value: RecordDataType.flow },
+  { label: "Temp. wody (°C)", value: RecordDataType.temperature },
+];
 
 interface Props {
   selectedStation: StationType;
@@ -37,43 +43,27 @@ const Filters = ({ selectedStation }: Props) => {
     [sortedYears]
   );
 
-   const yearsOptionsFrom = useMemo(() => {
-    return yearsOptions;
-  }, [yearsOptions]);
+  const yearsOptionsFrom = useMemo(() => yearsOptions, [yearsOptions]);
 
   const yearsOptionsTo = useMemo(() => {
     const from = yearFrom ? Number(yearFrom) : undefined;
-    const filtered = from
-      ? yearsOptions.filter((opt) => Number(opt.value) >= from)
-      : yearsOptions;
-    return filtered;
+    return from ? yearsOptions.filter((opt) => Number(opt.value) >= from) : yearsOptions;
   }, [yearsOptions, yearFrom]);
 
-const handleYearFromChange = (_: string | null, option: ComboboxItem) => {
+  const handleYearFromChange = (_: string | null, option: ComboboxItem) => {
     const newFrom = option?.value ?? null;
     if (!newFrom) return;
-
-    if (yearTo && Number(yearTo) < Number(newFrom)) {
-      setYearTo(newFrom);
-    }
+    if (yearTo && Number(yearTo) < Number(newFrom)) setYearTo(newFrom);
     setYearFrom(newFrom);
   };
 
   const handleYearToChange = (_: string | null, option: ComboboxItem) => {
     const newTo = option?.value ?? null;
     if (!newTo) return;
-
-    if (!yearFrom) {
-      setYearFrom(newTo);
-    } else if (Number(newTo) < Number(yearFrom)) {
-      setYearTo(yearFrom);
-      return;
-    }
+    if (!yearFrom) { setYearFrom(newTo); }
+    else if (Number(newTo) < Number(yearFrom)) { setYearTo(yearFrom); return; }
     setYearTo(newTo);
   };
-  const handleDataTypeChange = (newDataType: string) => {
-    setSelectedDataType(newDataType as RecordDataType);
-  }
 
   return (
     <div>
@@ -84,53 +74,48 @@ const handleYearFromChange = (_: string | null, option: ComboboxItem) => {
       ) : (
         <div className={styles.container}>
           <div className={styles.row}>
-            <Text className={styles.rangeLabel}>Zakres danych</Text>
+            <Text className={styles.rangeLabel}>Zakres danych:</Text>
+            <Select
+              data={DATA_TYPE_OPTIONS}
+              value={dataType}
+              onChange={(v) => v && setSelectedDataType(v as RecordDataType)}
+              styles={{ input: { height: 25, minHeight: 25 } }}
+              w={160}
+            />
             <Select
               data={yearsOptionsFrom}
               placeholder="od"
               disabled={!sortedYears.length}
               classNames={{ option: styles.option, input: styles.option }}
+              styles={{ input: { height: 25, minHeight: 25 } }}
               value={yearFrom ?? null}
               onChange={handleYearFromChange}
-              w={100}
+              w={82}
             />
             <Select
               data={yearsOptionsTo}
               placeholder="do"
               disabled={!sortedYears.length}
               classNames={{ option: styles.option, input: styles.option }}
+              styles={{ input: { height: 25, minHeight: 25 } }}
               value={yearTo ?? null}
               onChange={handleYearToChange}
-              w={100}
+              w={82}
             />
             <Switch
-              size="lg"
+              size="md"
               label={isMonthlyData ? "Wartości miesięczne" : "Wartości roczne"}
-              styles={{ label: { fontSize: 14 } }}
+              styles={{ label: { fontSize: 14, whiteSpace: "nowrap" } }}
               onChange={(event) => setMonthlyData(event.currentTarget.checked)}
               value="yearly"
             />
           </div>
           <div className={styles.row}>
-            <Radio.Group
-              name="dataType"
-              label="Typ danych"
-              className={styles.inlineGroup}
-              classNames={{ label: styles.rangeLabel }}
-              value={dataType}
-              onChange={handleDataTypeChange}
-            >
-              <Radio label="Stan wody (cm)" value={RecordDataType.level} />
-              <Radio label="Przepływ (m3/s)" value={RecordDataType.flow} />
-              <Radio label="Temperatura wody (°C)" value={RecordDataType.temperature} />
-            </Radio.Group>
-          </div>
-          <div className={styles.row}>
             <Checkbox.Group
-              label={"Wartości"}
+              label={"Wartości:"}
               classNames={{ label: styles.rangeLabel }}
               value={aggregations}
-              onChange={setAggregation}
+              onChange={(value) => setAggregation(value as ("min" | "avg" | "max")[])}
               className={styles.inlineGroup}
             >
               <Checkbox value="max" label="Maksymalne" color="red"/>

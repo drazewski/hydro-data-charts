@@ -24,3 +24,9 @@
   font-weight: 300;
   color: #555;
 }
+
+@media (max-width: 768px) {
+  .subtitle {
+    font-size: 13px;
+  }
+}

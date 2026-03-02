@@ -11,13 +11,35 @@
 }
 
 .titleWrapper {
-  margin-bottom: 6px;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-width: 0;
+  flex-direction: column;
 }
 
 .title {
   font-weight: 400;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.stationId {
+  font-size: 18px;
+  color: #555;
+  font-weight: 300;
+  padding-left: 8px;
+  display: inline-block;
+
+}
+
+.selected {
+  align-items: center;
+  flex-direction: row;
 }
 
 .subtitleWrapper {

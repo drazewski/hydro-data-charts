@@ -41,6 +41,12 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
   const avgLineData = `avg${capitalizedType}`;
   const maxLineData = `max${capitalizedType}`;
 
+  const hasData = useMemo(() => {
+    return data.some(
+      (d) => d[minLineData] != null || d[avgLineData] != null || d[maxLineData] != null
+    );
+  }, [data, minLineData, avgLineData, maxLineData]);
+
   const createSeries = useCallback(() => {
     const series = [];
     if (aggregation.includes('min')) {
@@ -88,59 +94,62 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
         <Text c="red">Błąd ładowania danych wykresu. Spróbuj ponownie.</Text>
       ) : (
       <>
-      <LineChart
-        h={400}
-        data={data}
-        dataKey="label"
-        series={createSeries()}
-        curveType="monotone"
-        tickLine="x"
-        gridAxis="xy"
-        withDots={false}
-        strokeWidth={3}
-        // styl osi X
-        xAxisProps={{
-          tick: {
-            fill: '#222',          // ciemny kolor tekstu
-            fontSize: 12,
-            fontWeight: 500,
-            fontFamily: 'Poppins, sans-serif',
-          },
-          axisLine: { stroke: '#ccc' }, // cienka szara linia osi
-        }}
-        // styl osi Y
-        yAxisProps={{
-          domain: selectedType === RecordDataType.temperature ? [0, maxTemperature] : ['auto', 'auto'],
-          tick: {
-            fill: '#444',
-            fontSize: 12,
-            fontWeight: 500,
-            fontFamily: 'Poppins, sans-serif',
-          },
-          tickFormatter: (v) => `${v} ${getUnit()}`,
-          axisLine: { stroke: '#ccc' },
-        }}
-        // siatka
-        gridProps={{
-          stroke: '#e0e0e0',    // kolor linii siatki
-          strokeDasharray: '3 3', // przerywane linie
-        }}
-        // legenda
-        legendProps={{
-          verticalAlign: 'bottom',
-          height: 50,
-          wrapperStyle: {
-            fontFamily: 'Poppins, sans-serif',
-            fontSize: 18,
-            color: '#333',
-          },
-        }}
-        valueFormatter={(value) => `${value} ${getUnit()}`}
-        tooltipProps={{
-          content: ({label, payload}) => <ChartTooltip label={label} payload={payload} unit={getUnit()} />,
-          position: { y: 90 }
-        }}
-      />
+      <div style={{ position: 'relative' }}>
+        <LineChart
+          h={400}
+          data={data}
+          dataKey="label"
+          series={createSeries()}
+          curveType="monotone"
+          tickLine="x"
+          gridAxis="xy"
+          withDots={false}
+          strokeWidth={3}
+          xAxisProps={{
+            tick: {
+              fill: '#222',
+              fontSize: 12,
+              fontWeight: 500,
+              fontFamily: 'Poppins, sans-serif',
+            },
+            axisLine: { stroke: '#ccc' },
+          }}
+          yAxisProps={{
+            domain: selectedType === RecordDataType.temperature ? [0, maxTemperature] : ['auto', 'auto'],
+            tick: {
+              fill: '#444',
+              fontSize: 12,
+              fontWeight: 500,
+              fontFamily: 'Poppins, sans-serif',
+            },
+            tickFormatter: (v) => `${v} ${getUnit()}`,
+            axisLine: { stroke: '#ccc' },
+          }}
+          gridProps={{
+            stroke: '#e0e0e0',
+            strokeDasharray: '3 3',
+          }}
+          legendProps={{
+            verticalAlign: 'bottom',
+            height: 50,
+            wrapperStyle: {
+              fontFamily: 'Poppins, sans-serif',
+              fontSize: 18,
+              color: '#333',
+            },
+          }}
+          valueFormatter={(value) => `${value} ${getUnit()}`}
+          tooltipProps={{
+            content: ({label, payload}) => <ChartTooltip label={label} payload={payload} unit={getUnit()} />,
+            position: { y: 90 }
+          }}
+        />
+        {!hasData && (
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+            <Text size="lg" c="dimmed">Brak danych do wyświetlenia</Text>
+          </div>
+        )}
+      </div>
       <p style={{ fontSize: 16, textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-open-sans), system-ui, sans-serif' }}>
         Źródłem pochodzenia danych jest <strong><a href="https://imgw.pl/" target="_blank">Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy</a></strong>
       </p>

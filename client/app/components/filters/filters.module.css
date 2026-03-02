@@ -9,45 +9,69 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 20px;
+  margin-bottom: 20px;
 }
 
 .row {
   display: flex;
-  gap: 30px;
+  gap: 15px;
   align-items: center;
+
+  & label {
+    padding-left: 5px;
+    padding-right: 15px;
+  }
+}
+
+.rangeInputs {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-left: 15px;
+}
+
+@media (max-width: 768px) {
+  .rangeInputs {margin-left: 0;  }
 }
 
 .rangeLabel {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 400;
   white-space: nowrap;
   min-width: 110px;
+  max-width: 110px;
 }
 
 .inlineGroup {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
 }
 
 .inlineGroup [role="radiogroup"],
 .inlineGroup [role="group"] {
   display: flex;
   align-items: center;
-  gap: 20px;
 }
 
 .inlineGroup [role="radiogroup"],
 .inlineGroup [role="group"] {
   display: flex;
   align-items: center;
-  gap: 20px;
 }
 
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
     gap: 10px;
+  }
+
+  .rangeLabel {
+    display: none;
+  }
+
+  .inlineGroup > label {
+    display: none;
   }
 
   .group [role="radiogroup"] {
@@ -58,9 +82,9 @@
   }
 
   .group [role="group"] {
-  display: flex;
-  height: 36px;
-  align-items: center;
-  gap: 10px;
-}
+    display: flex;
+    height: 36px;
+    align-items: center;
+    gap: 10px;
+  }
 }

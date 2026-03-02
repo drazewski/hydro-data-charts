@@ -1,0 +1,10 @@
+.actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.searchRow {
+  width: 100%;
+}

@@ -28,10 +28,11 @@ export default function Home() {
     <QueryClientProvider client={queryClient}>
       <Header />
       <main className={styles.main}>
-        <div className={styles.titleWrapper}>
-          <h2 className={styles.title}>{selectedStation ? `${selectedStation.waterName} - ${selectedStation.name.toUpperCase()} (${selectedStation.id})` : 'Wybierz stację pomiarową'}</h2>
-        </div>
-        <div className={styles.stationRow}>
+        <div className={`${styles.titleWrapper} ${selectedStation ? styles.selected : ""}`}>
+          <h2 className={styles.title}>
+            {selectedStation ? `${selectedStation.waterName} - ${selectedStation.name.toUpperCase()}` : 'Wybierz stację pomiarową'}
+            {selectedStation && <span className={styles.stationId}>({selectedStation.id})</span>}
+          </h2>
           <StationForm />
         </div>
         {selectedStation && <Filters selectedStation={selectedStation} />}
