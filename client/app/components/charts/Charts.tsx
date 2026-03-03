@@ -43,20 +43,20 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
 
   const hasData = useMemo(() => {
     return data.some(
-      (d) => d[minLineData] != null || d[avgLineData] != null || d[maxLineData] != null
+      (d: Record<string, unknown>) => d[minLineData] != null || d[avgLineData] != null || d[maxLineData] != null
     );
   }, [data, minLineData, avgLineData, maxLineData]);
 
   const createSeries = useCallback(() => {
     const series = [];
     if (aggregation.includes('min')) {
-      series.push({ name: minLineData, label: 'minimalne wartości', color: 'black' });
+      series.push({ name: minLineData, label: 'minimalne wartości', color: 'black', strokeWidth: 1 });
     }
     if (aggregation.includes('avg')) {
-      series.push({ name: avgLineData, label: 'średnie wartości', color: 'blue' });
+      series.push({ name: avgLineData, label: 'średnie wartości', color: 'blue', strokeWidth: 3 });
     }
     if (aggregation.includes('max')) {
-      series.push({ name: maxLineData, label: 'maksymalne wartości', color: 'red' });
+      series.push({ name: maxLineData, label: 'maksymalne wartości', color: 'red', strokeWidth: 1 });
     }
     return series;
   }, [aggregation, minLineData, avgLineData, maxLineData]);
@@ -96,7 +96,7 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
       <>
       <div style={{ position: 'relative' }}>
         <LineChart
-          h={400}
+          h={350}
           data={data}
           dataKey="label"
           series={createSeries()}
@@ -104,7 +104,6 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
           tickLine="x"
           gridAxis="xy"
           withDots={false}
-          strokeWidth={3}
           xAxisProps={{
             tick: {
               fill: '#222',
@@ -115,7 +114,12 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
             axisLine: { stroke: '#ccc' },
           }}
           yAxisProps={{
-            domain: selectedType === RecordDataType.temperature ? [0, maxTemperature] : ['auto', 'auto'],
+            domain: selectedType === RecordDataType.temperature
+              ? [0, maxTemperature]
+              : [
+                  (dataMin: number) => Math.floor(dataMin - (dataMin * 0.3)),
+                  (dataMax: number) => Math.ceil(dataMax + (dataMax * 0.3)),
+                ],
             tick: {
               fill: '#444',
               fontSize: 12,
@@ -140,7 +144,7 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
           }}
           valueFormatter={(value) => `${value} ${getUnit()}`}
           tooltipProps={{
-            content: ({label, payload}) => <ChartTooltip label={label} payload={payload} unit={getUnit()} />,
+            content: ({label, payload}) => <ChartTooltip label={label} payload={payload as Record<string, unknown>[] | undefined} unit={getUnit()} />,
             position: { y: 90 }
           }}
         />
@@ -150,12 +154,14 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
           </div>
         )}
       </div>
-      <p style={{ fontSize: 16, textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-open-sans), system-ui, sans-serif' }}>
+      <div id="data-source-info" style={{ marginTop: 20 }}>
+      <p style={{ fontSize: 14, textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-open-sans), system-ui, sans-serif' }}>
         Źródłem pochodzenia danych jest <strong><a href="https://imgw.pl/" target="_blank">Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy</a></strong>
       </p>
-      <p style={{ fontSize: 16, fontWeight: 800, color: '#d43e3e', textAlign: 'center', fontFamily: 'var(--font-open-sans), system-ui, sans-serif' }}>
+      <p style={{ fontSize: 14, fontWeight: 800, color: '#d43e3e', textAlign: 'center', fontFamily: 'var(--font-open-sans), system-ui, sans-serif' }}>
         Dane Instytutu Meteorologii i Gospodarki Wodnej – Państwowego Instytutu Badawczego zostały przetworzone
       </p>
+      </div>
       </>
       )}
     </div>

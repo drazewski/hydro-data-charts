@@ -1,3 +1,21 @@
+.floatingWrapper {
+  position: relative;
+}
+
+.floatingLabel {
+  position: absolute;
+  top: -5px;
+  left: 8px;
+  font-size: 10px;
+  font-weight: 300;
+  color: #555;
+  background: white;
+  padding: 0 4px;
+  z-index: 1;
+  pointer-events: none;
+  line-height: 1;
+}
+
 .loader {
   margin: 25% auto;
 }
@@ -9,7 +27,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .row {
@@ -22,6 +40,17 @@
     padding-right: 15px;
   }
 }
+
+.rowNoGap {
+  display: flex;
+  gap: 0;
+  align-items: center;
+
+  & label {
+    padding-left: 5px;
+    padding-right: 15px;
+  }
+} 
 
 .rangeInputs {
   display: flex;
@@ -63,7 +92,6 @@
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
-    gap: 10px;
   }
 
   .rangeLabel {

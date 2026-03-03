@@ -1,15 +1,17 @@
 import { useQuery } from 'react-query';
 import apiClient from '../config/api';
 
-const fetchAvailableYears = async (stationId: number): Promise<number[]> => {
-  const { data } = await apiClient.get<{ years: number[] }>(`/records/years/${stationId}`);
+const fetchAvailableYears = async (stationId: number, type: string): Promise<number[]> => {
+  const { data } = await apiClient.get<{ years: number[] }>(`/records/years/${stationId}`, {
+    params: { type },
+  });
   return data.years;
 };
 
-export const useAvailableYears = (stationId: number | undefined) => {
+export const useAvailableYears = (stationId: number | undefined, type: string) => {
   const { data, isLoading, isError } = useQuery(
-    ['availableYears', stationId],
-    () => fetchAvailableYears(stationId!),
+    ['availableYears', stationId, type],
+    () => fetchAvailableYears(stationId!, type),
     { enabled: !!stationId }
   );
 

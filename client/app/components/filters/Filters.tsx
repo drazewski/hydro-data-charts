@@ -1,21 +1,24 @@
 import { Checkbox, ComboboxItem, Loader, Select, Switch, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useStationStore } from "../../hooks/useStationStore";
 import { RecordDataType, StationType } from "../../types/recordTypes";
 import styles from "./filters.module.css";
 import { useEffect, useMemo } from "react";
 import { useAvailableYears } from "../../hooks/useAvailableYears";
 
-const DATA_TYPE_OPTIONS = [
-  { label: "Stan wody (cm)", value: RecordDataType.level },
-  { label: "Przepływ (m3/s)", value: RecordDataType.flow },
-  { label: "Temp. wody (°C)", value: RecordDataType.temperature },
-];
-
 interface Props {
   selectedStation: StationType;
 }
 
 const Filters = ({ selectedStation }: Props) => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
+  const DATA_TYPE_OPTIONS = [
+    { label: "Stan wody", value: RecordDataType.level },
+    { label: "Przepływ", value: RecordDataType.flow },
+    { label: isMobile ? "Temp. wody" : "Temperatura wody", value: RecordDataType.temperature },
+  ];
+
   const yearFrom = useStationStore((s) => s.yearFrom);
   const yearTo = useStationStore((s) => s.yearTo);
   const setYearFrom = useStationStore((s) => s.setYearFrom);
@@ -26,7 +29,7 @@ const Filters = ({ selectedStation }: Props) => {
   const setMonthlyData = useStationStore((state) => state.setIsMonthlyData);
   const setSelectedDataType = useStationStore((state) => state.setSelectedDataType);
   const setAggregation = useStationStore((state) => state.setAggregation);
-  const { years, isLoading, isError } = useAvailableYears(selectedStation?.id);
+  const { years, isLoading, isError } = useAvailableYears(selectedStation?.id, dataType);
 
   const sortedYears = useMemo(() => [...years].sort((a, b) => a - b), [years]);
 
@@ -80,37 +83,45 @@ const Filters = ({ selectedStation }: Props) => {
               value={dataType}
               onChange={(v) => v && setSelectedDataType(v as RecordDataType)}
               styles={{ input: { height: 25, minHeight: 25 } }}
-              w={160}
+              w={128}
             />
-            <Select
-              data={yearsOptionsFrom}
-              placeholder="od"
-              disabled={!sortedYears.length}
-              classNames={{ option: styles.option, input: styles.option }}
-              styles={{ input: { height: 25, minHeight: 25 } }}
-              value={yearFrom ?? null}
-              onChange={handleYearFromChange}
-              w={82}
-            />
-            <Select
-              data={yearsOptionsTo}
-              placeholder="do"
-              disabled={!sortedYears.length}
-              classNames={{ option: styles.option, input: styles.option }}
-              styles={{ input: { height: 25, minHeight: 25 } }}
-              value={yearTo ?? null}
-              onChange={handleYearToChange}
-              w={82}
-            />
-            <Switch
-              size="md"
-              label={isMonthlyData ? "Wartości miesięczne" : "Wartości roczne"}
-              styles={{ label: { fontSize: 14, whiteSpace: "nowrap" } }}
-              onChange={(event) => setMonthlyData(event.currentTarget.checked)}
-              value="yearly"
-            />
+            <div className={styles.floatingWrapper}>
+              <span className={styles.floatingLabel}>od</span>
+              <Select
+                data={yearsOptionsFrom}
+                placeholder="od"
+                disabled={!sortedYears.length}
+                classNames={{ option: styles.option, input: styles.option }}
+                styles={{ input: { height: 25, minHeight: 25 } }}
+                value={yearFrom ?? null}
+                onChange={handleYearFromChange}
+                w={82}
+              />
+            </div>
+            <div className={styles.floatingWrapper}>
+              <span className={styles.floatingLabel}>do</span>
+              <Select
+                data={yearsOptionsTo}
+                placeholder="do"
+                disabled={!sortedYears.length}
+                classNames={{ option: styles.option, input: styles.option }}
+                styles={{ input: { height: 25, minHeight: 25 } }}
+                value={yearTo ?? null}
+                onChange={handleYearToChange}
+                w={82}
+              />
+            </div>
+            {!isMobile && (
+              <Switch
+                size="md"
+                label={isMonthlyData ? "Wartości miesięczne" : "Wartości roczne"}
+                styles={{ label: { fontSize: 14, whiteSpace: "nowrap" } }}
+                onChange={(event) => setMonthlyData(event.currentTarget.checked)}
+                value="yearly"
+              />
+            )}
           </div>
-          <div className={styles.row}>
+          <div className={styles.rowNoGap}>
             <Checkbox.Group
               label={"Wartości:"}
               classNames={{ label: styles.rangeLabel }}
@@ -118,10 +129,19 @@ const Filters = ({ selectedStation }: Props) => {
               onChange={(value) => setAggregation(value as ("min" | "avg" | "max")[])}
               className={styles.inlineGroup}
             >
-              <Checkbox value="max" label="Maksymalne" color="red"/>
-              <Checkbox value="avg" label="Średnie" color="blue"/>
-              <Checkbox value="min" label="Minimalne" color="black"/>
+              <Checkbox value="max" label={isMobile ? "Maks." : "Maksymalne"} color="red"/>
+              <Checkbox value="avg" label={isMobile ? "Śr." : "Średnie"} color="blue"/>
+              <Checkbox value="min" label={isMobile ? "Min." : "Minimalne"} color="black"/>
             </Checkbox.Group>
+            {isMobile && (
+              <Switch
+                size="md"
+                label={isMonthlyData ? "Miesięczne" : "Roczne"}
+                styles={{ label: { fontSize: 14, whiteSpace: "nowrap" } }}
+                onChange={(event) => setMonthlyData(event.currentTarget.checked)}
+                value="yearly"
+              />
+            )}
           </div>
         </div>
       )}

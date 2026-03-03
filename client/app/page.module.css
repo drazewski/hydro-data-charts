@@ -16,15 +16,16 @@
   margin-bottom: 12px;
   min-width: 0;
   flex-direction: column;
+
+  @media (max-width: 600px) {
+    justify-content: space-between;
+  }
 }
 
 .title {
   font-weight: 400;
   font-size: 20px;
   line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   min-width: 0;
 }
 
@@ -33,8 +34,10 @@
   color: #555;
   font-weight: 300;
   padding-left: 8px;
-  display: inline-block;
-
+  
+  @media (max-width: 600px) {
+    font-size: 13px;
+  }
 }
 
 .selected {

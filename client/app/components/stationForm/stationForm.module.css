@@ -1,10 +1,21 @@
 .actions {
   display: flex;
-  gap: 6px;
+  gap: 2px;
   align-items: center;
   flex-shrink: 0;
+  transform: translateX(10px);
+}
+
+.editButton {
+  display: flex;
 }
 
 .searchRow {
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .editButton {
+    display: none;
+  }
 }

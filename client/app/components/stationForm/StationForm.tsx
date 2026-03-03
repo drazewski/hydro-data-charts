@@ -37,8 +37,8 @@ const StationForm = () => {
   if (selectedStation && !isEditing) {
     return (
       <div className={styles.actions}>
-        <Tooltip label="Zmień stację">
-          <ActionIcon variant="subtle" color="var(--mantine-primary-color-filled)" onClick={() => setIsEditing(true)}>
+        <Tooltip label="Zmień stację" className={styles.editButton}>
+          <ActionIcon variant="subtle" color="var(--mantine-primary-color-filled)" onClick={() => setIsEditing(true)} className={styles.editButton}>
             <IconPencil size={22} />
           </ActionIcon>
         </Tooltip>

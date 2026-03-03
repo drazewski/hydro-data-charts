@@ -23,8 +23,8 @@ const juraBold = localFont({
 });
 
 export const metadata = {
-  title: "Mantine Next.js template",
-  description: "I am using Mantine with Next.js!",
+  title: "HydroData - Wykresy archiwalnych danych hydrologicznych",
+  description: "Hydrologiczne dane archiwalne pochodzące z IMGW-PIB w postaci wykresów.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

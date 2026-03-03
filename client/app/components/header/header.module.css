@@ -26,6 +26,15 @@
 }
 
 @media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+  }
+  .brand {
+    gap: 10px;
+  }
+  .header {
+    padding: 12px 0;
+  }
   .subtitle {
     font-size: 13px;
   }

@@ -23,7 +23,7 @@ export const useStationStore = create<StationStoreType>((set) => ({
   isMonthlyData: false,
   dataType: RecordDataType.level,
   aggregation: ['min','avg','max'],
-  setSelectedStation: (newStation) => set(() => ({ station: newStation })),
+  setSelectedStation: (newStation) => set(() => ({ station: newStation, yearFrom: null, yearTo: null })),
   setYearFrom: (year) => set(() => ({ yearFrom: year })),
   setYearTo: (year) => set(() => ({ yearTo: year })),
   setIsMonthlyData: (isMonthly) => set(() => ({ isMonthlyData: isMonthly })),
