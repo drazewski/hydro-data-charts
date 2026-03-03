@@ -1,12 +1,20 @@
 .header {
+  display: flex;
+  flex-direction: column;
   padding: 24px 0;
-  /* margin-bottom: 24px; */
+  gap: 4px;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .titleIcon {
@@ -22,7 +30,8 @@
 .subtitle {
   font-size: 16px;
   font-weight: 300;
-  color: #555;
+  color: var(--mantine-color-dimmed);
+  margin-left: 42px;
 }
 
 @media (max-width: 768px) {
@@ -37,5 +46,6 @@
   }
   .subtitle {
     font-size: 13px;
+    margin-left: 0;
   }
 }

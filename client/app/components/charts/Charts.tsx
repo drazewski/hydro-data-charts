@@ -1,5 +1,5 @@
 import { LineChart } from '@mantine/charts';
-import { Loader, Text } from '@mantine/core';
+import { Loader, Text, useMantineColorScheme } from '@mantine/core';
 import { MonthlyStructuredRecordType, RecordDataType, StationType, YearlyRecordType } from "../../types/recordTypes";
 import { useMonthlyRecords } from "../../hooks/useMonthlyRecords";
 import { useCallback, useMemo } from 'react';
@@ -17,6 +17,10 @@ interface Props {
 const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedType }: Props) => {
   const aggregation = useStationStore((state) => state.aggregation);
   const isMonthlyData = useStationStore((state) => state.isMonthlyData);
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === 'dark';
+  const tickColor = isDark ? '#aaa' : '#444';
+  const gridColor = isDark ? '#333' : '#e0e0e0';
   const { data: monthlyData, isLoading: isLoadingMonthly, isError: isErrorMonthly } = useMonthlyRecords(selectedStation?.id, isMonthlyData, Number(selectedYearFrom), Number(selectedYearTo));
   const { data: yearlyData, isLoading: isLoadingYearly, isError: isErrorYearly } = useYearlyRecords(selectedStation?.id, isMonthlyData, Number(selectedYearFrom), Number(selectedYearTo));
 
@@ -50,7 +54,7 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
   const createSeries = useCallback(() => {
     const series = [];
     if (aggregation.includes('min')) {
-      series.push({ name: minLineData, label: 'minimalne wartości', color: 'black', strokeWidth: 1 });
+      series.push({ name: minLineData, label: 'minimalne wartości', color: isDark ? 'white' : 'black', strokeWidth: 1 });
     }
     if (aggregation.includes('avg')) {
       series.push({ name: avgLineData, label: 'średnie wartości', color: 'blue', strokeWidth: 3 });
@@ -106,12 +110,12 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
           withDots={false}
           xAxisProps={{
             tick: {
-              fill: '#222',
+              fill: tickColor,
               fontSize: 12,
               fontWeight: 500,
               fontFamily: 'Poppins, sans-serif',
             },
-            axisLine: { stroke: '#ccc' },
+            axisLine: { stroke: gridColor },
           }}
           yAxisProps={{
             domain: selectedType === RecordDataType.temperature
@@ -121,16 +125,16 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
                   (dataMax: number) => Math.ceil(dataMax + (dataMax * 0.3)),
                 ],
             tick: {
-              fill: '#444',
+              fill: tickColor,
               fontSize: 12,
               fontWeight: 500,
               fontFamily: 'Poppins, sans-serif',
             },
             tickFormatter: (v) => `${v} ${getUnit()}`,
-            axisLine: { stroke: '#ccc' },
+            axisLine: { stroke: gridColor },
           }}
           gridProps={{
-            stroke: '#e0e0e0',
+            stroke: gridColor,
             strokeDasharray: '3 3',
           }}
           legendProps={{
@@ -139,7 +143,7 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
             wrapperStyle: {
               fontFamily: 'Poppins, sans-serif',
               fontSize: 18,
-              color: '#333',
+              color: tickColor,
             },
           }}
           valueFormatter={(value) => `${value} ${getUnit()}`}
@@ -155,7 +159,7 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
         )}
       </div>
       <div id="data-source-info" style={{ marginTop: 20 }}>
-      <p style={{ fontSize: 14, textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-open-sans), system-ui, sans-serif' }}>
+      <p style={{ fontSize: 14, textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-open-sans), system-ui, sans-serif', color: tickColor }}>
         Źródłem pochodzenia danych jest <strong><a href="https://imgw.pl/" target="_blank">Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy</a></strong>
       </p>
       <p style={{ fontSize: 14, fontWeight: 800, color: '#d43e3e', textAlign: 'center', fontFamily: 'var(--font-open-sans), system-ui, sans-serif' }}>

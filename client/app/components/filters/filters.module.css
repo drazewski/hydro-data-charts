@@ -9,7 +9,7 @@
   font-size: 10px;
   font-weight: 300;
   color: #555;
-  background: white;
+  background: var(--mantine-color-body);
   padding: 0 4px;
   z-index: 1;
   pointer-events: none;
