@@ -1,0 +1,11 @@
+.links {
+  flex-direction: row;
+}
+
+@media (max-width: 600px) {
+  .links {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+}

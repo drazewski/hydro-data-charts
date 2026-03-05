@@ -40,7 +40,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${openSans.variable} ${juraMedium.variable} ${juraBold.variable}`}>
         <MantineProvider theme={theme} defaultColorScheme="light">
-          {children}
+          <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+            {children}
+          </div>
         </MantineProvider>
       </body>
     </html>

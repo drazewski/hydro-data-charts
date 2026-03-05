@@ -121,8 +121,8 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
             domain: selectedType === RecordDataType.temperature
               ? [0, maxTemperature]
               : [
-                  (dataMin: number) => Math.floor(dataMin - (dataMin * 0.3)),
-                  (dataMax: number) => Math.ceil(dataMax + (dataMax * 0.3)),
+                  (dataMin: number) => isFinite(dataMin) ? Math.floor(dataMin - (dataMin * 0.3)) : 0,
+                  (dataMax: number) => isFinite(dataMax) ? Math.ceil(dataMax + (dataMax * 0.3)) : 100,
                 ],
             tick: {
               fill: tickColor,

@@ -15,6 +15,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
 }
 
 .titleIcon {
@@ -22,16 +23,15 @@
 }
 
 .title {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 400;
-  color: #1c7ed6;
+  color: light-dark(#1a1a1a, #ffffff);
 }
 
 .subtitle {
   font-size: 16px;
   font-weight: 300;
   color: var(--mantine-color-dimmed);
-  margin-left: 42px;
 }
 
 @media (max-width: 768px) {

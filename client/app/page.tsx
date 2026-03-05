@@ -6,7 +6,9 @@ import Filters from "./components/filters/Filters";
 import StationForm from "./components/stationForm/StationForm";
 import { useStationStore } from "./hooks/useStationStore";
 import Charts from "./components/charts/Charts";
+import ExtremumTable from "./components/extremumTable/ExtremumTable";
 import Header from "./components/header/Header";
+import { Footer } from "./components/footer/Footer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,9 +54,15 @@ export default function Home() {
               selectedYearFrom={selectedYearFrom}
               selectedYearTo={selectedYearTo}
             />
+            <ExtremumTable
+              selectedStation={selectedStation}
+              selectedYearFrom={selectedYearFrom}
+              selectedYearTo={selectedYearTo}
+            />
           </div>
         )}
       </main>
+      <Footer />
     </QueryClientProvider>
   );
 }

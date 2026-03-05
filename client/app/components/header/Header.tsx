@@ -10,10 +10,10 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.topRow}>
-        <div className={styles.brand}>
+        <a href="/" className={styles.brand}>
           <Image src="/icon.svg" alt="" width={30} height={30} className={styles.titleIcon} aria-hidden="true" />
           <h1 className={styles.title}>HydroDane</h1>
-        </div>
+        </a>
         <ActionIcon variant="subtle" color="gray" onClick={toggleColorScheme} aria-label="Zmień motyw">
           {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
         </ActionIcon>

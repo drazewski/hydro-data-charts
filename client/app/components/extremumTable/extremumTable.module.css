@@ -1,0 +1,19 @@
+.thead {
+  background-color: var(--mantine-color-gray-0);
+}
+
+:global([data-mantine-color-scheme='dark']) .thead {
+  background-color: var(--mantine-color-dark-6);
+}
+
+.firstCol {
+  text-align: left;
+  padding: 10px 14px !important;
+  white-space: nowrap;
+}
+
+.valueCol {
+  text-align: right;
+  padding: 10px 14px !important;
+  white-space: nowrap;
+}

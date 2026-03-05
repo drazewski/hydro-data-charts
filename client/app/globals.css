@@ -4,6 +4,10 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  min-height: 100%;
+}
+
 body {
   color: var(--mantine-color-text);
   background: var(--mantine-color-body);
@@ -14,6 +18,9 @@ body {
   font-family: var(--font-open-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 * {
