@@ -24,7 +24,7 @@
 ## ⚙️ Requirements
 
 - Node.js 18+ (or compatible)
-- MySQL server (create a database named and provide credentials here: `app/config/db.config.js`)
+- MySQL server and database credentials provided through environment variables
 
 ---
 
@@ -49,18 +49,47 @@ npm install
 cd ..
 ```
 
-3. Database: create a MySQL database and provide credentials.
-   - The DB config is in `app/config/db.config.js` which is not in the repository, if you create your own database you will have to create this file.
-   - The structure of the db.config.js is
+3. Database: create a MySQL database and provide credentials through environment variables.
+   - For local development, copy `.env.example` to `.env` and fill in your database credentials.
 
+```bash
+cp .env.example .env
 ```
-   module.exports = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "your_db_password",
-    DB: "your_db_name",
-    dialect: "mysql",
-  };
+
+   - Required variables:
+
+```bash
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=your_db_name
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+```
+
+   - Optional variables:
+
+```bash
+DB_DIALECT=mysql
+DB_POOL_MAX=5
+DB_POOL_MIN=0
+DB_POOL_ACQUIRE=30000
+DB_POOL_IDLE=10000
+```
+
+   - Example local `.env`:
+
+```bash
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=db_hydro
+DB_USER=root
+DB_PASSWORD=your_db_password
+```
+
+   - Example local start:
+
+```bash
+node server.js
 ```
 
 **Importing data**
@@ -140,7 +169,7 @@ Feel free to open issues or PRs. If you plan to make breaking changes to the DB 
 
 **Hosting**
 
-- Note: the project will be hosted under a public URL soon (to be announced).
+- For Render, add the same `DB_*` variables in the service environment settings.
 
 ---
 
@@ -151,4 +180,3 @@ This project is licensed under **GPL-3.0-only** (see `package.json`).
 ---
 
 **Author:** Łukasz Drazewski
-
