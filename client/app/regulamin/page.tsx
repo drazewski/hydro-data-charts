@@ -4,7 +4,7 @@ import { Footer } from "../components/footer/Footer";
 import styles from "../page.module.css";
 
 export const metadata = {
-  title: "Regulamin strony – HydroData",
+  title: "Regulamin strony – HydroDane",
 };
 
 export default function RegulaminPage() {
@@ -18,7 +18,7 @@ export default function RegulaminPage() {
           <Stack gap="xs">
             <Title order={4} fw={500}>1. Postanowienia ogólne</Title>
             <Text size="sm" c="dimmed">
-              Serwis HydroData udostępnia wizualizacje archiwalnych danych hydrologicznych pochodzących z zasobów publicznych
+              Serwis HydroDane udostępnia wizualizacje archiwalnych danych hydrologicznych pochodzących z zasobów publicznych
               Instytutu Meteorologii i Gospodarki Wodnej – Państwowego Instytutu Badawczego (IMGW-PIB).
               Serwis nie jest powiązany, afiliowany ani sponsorowany przez IMGW-PIB.
             </Text>
@@ -29,7 +29,7 @@ export default function RegulaminPage() {
             <Text size="sm" c="dimmed">
               Dane prezentowane w serwisie pochodzą z publicznych zasobów udostępnianych przez IMGW-PIB
               pod adresem danepubliczne.imgw.pl. Właścicielem danych jest Skarb Państwa, a rozporządza nimi IMGW-PIB. Dane zostały przetworzone na potrzeby wizualizacji.
-              Wszelkie prawa do wizualizacji i wykresów zastrzeżone – HydroData.
+              Wszelkie prawa do wizualizacji i wykresów zastrzeżone – HydroDane.
             </Text>
           </Stack>
 
@@ -42,7 +42,7 @@ export default function RegulaminPage() {
               do decyzji krytycznych (np. bezpieczeństwo, żegluga, ochrona przeciwpowodziowa).
             </Text>
             <Text size="sm" c="dimmed">
-              Właściciel serwisu HydroData nie ponosi odpowiedzialności za ewentualne błędy, braki
+              Właściciel serwisu HydroDane nie ponosi odpowiedzialności za ewentualne błędy, braki
               lub nieaktualność prezentowanych danych.
             </Text>
           </Stack>

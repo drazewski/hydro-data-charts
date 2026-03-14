@@ -23,7 +23,7 @@ const juraBold = localFont({
 });
 
 export const metadata = {
-  title: "HydroData - Wykresy archiwalnych danych hydrologicznych",
+  title: "HydroDane - Wykresy archiwalnych danych hydrologicznych",
   description: "Hydrologiczne dane archiwalne pochodzące z IMGW-PIB w postaci wykresów.",
 };
 

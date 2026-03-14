@@ -41,7 +41,7 @@ export function Footer() {
             </Anchor>
           </Group>
           <Text size="xs" c="dimmed">
-            HydroData – wszystkie prawa do wizualizacji i wykresów zastrzeżone. Dane źródłowe: IMGW-PIB.
+            HydroDane – wszystkie prawa do wizualizacji i wykresów zastrzeżone. Dane źródłowe: IMGW-PIB.
           </Text>
           <Text size="xs" c="dimmed">
             Serwis nie jest powiązany, afiliowany ani sponsorowany przez Instytut Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy (IMGW-PIB).

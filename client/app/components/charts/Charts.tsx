@@ -63,7 +63,7 @@ const Charts = ({ selectedStation, selectedYearFrom, selectedYearTo, selectedTyp
       series.push({ name: maxLineData, label: 'maksymalne wartości', color: 'red', strokeWidth: 1 });
     }
     return series;
-  }, [aggregation, minLineData, avgLineData, maxLineData]);
+  }, [aggregation, minLineData, avgLineData, maxLineData, isDark]);
 
   const getUnit = useCallback(() => {
     switch (selectedType) {
