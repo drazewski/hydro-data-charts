@@ -3,6 +3,7 @@ node_modules
 .env.example
 
 app/config/db.config.js
+*.sql
 
 client/build
 client/.next
